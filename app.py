@@ -9,7 +9,7 @@ app = Flask(__name__)
 # app variable becomes Flask application object
 # What is Flask: tool that build/run websites / web apps using Python
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 # Tells Flask app where database is located
 
 class Base(DeclarativeBase):
@@ -20,6 +20,9 @@ db = SQLAlchemy(model_class = Base)
 #creating connection between Flask and DB using SQLALCHEMY
 #makes db "tool to talk to database and create tables"
 
+db.init_app(app)
+
+#Association Table
 ticket_mechanics = Table(
     'ticket_mechanics',
     Base.metadata,
@@ -37,15 +40,21 @@ class Customers(Base):
     phone: Mapped[str] = mapped_column(String(150), nullable=False)
     address: Mapped[str] = mapped_column(String(500), nullable=True)
 
+    customer_service_ticket: Mapped['Service_tickets'] = relationship('Service_tickets', back_populates='service_ticket_customer')
+
 class Service_tickets(Base):
     __tablename__ = 'service_tickets'
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    service_dec: Mapped[str] = mapped_column(String(500), nullable=False)
+    customer_id: Mapped[int] = mapped_column(ForeignKey('customers.id'))
+    service_desc: Mapped[str] = mapped_column(String(500), nullable=False)
     vin: Mapped[str] = mapped_column(String(30), nullable=False)
     service_date: Mapped[date] = mapped_column(Date, nullable=False)
     price: Mapped[float] = mapped_column(Float)
-    #create FK
+
+    service_ticket_customer: Mapped['Customers'] = relationship('Customers', back_populates='customer_service_ticket')   
+    
+    service_ticket_mechanic: Mapped['Mechanics'] = relationship('Mechanics', secondary='ticket_mechanics', back_populates='mechanic_service_ticket')
     
 class Mechanics(Base):
     __tablename__ = 'mechanics'
@@ -56,6 +65,8 @@ class Mechanics(Base):
     email: Mapped[str] = mapped_column(String(350), nullable=False, unique=True)
     address: Mapped[str] = mapped_column(String(500), nullable=True)
     salary: Mapped[float] = mapped_column(Float)
+    
+    mechanic_service_ticket: Mapped['Service_tickets'] = relationship('Service_tickets', secondary='ticket_mechanics', back_populates='service_ticket_mechanic')
     
 with app.app_context():
     db.create_all()
