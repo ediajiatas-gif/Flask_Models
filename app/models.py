@@ -42,7 +42,7 @@ class Service_tickets(Base):
 
     service_ticket_customer: Mapped['Customers'] = relationship('Customers', back_populates='customer_service_ticket')   
     
-    service_ticket_mechanic: Mapped['Mechanics'] = relationship('Mechanics', secondary='ticket_mechanics', back_populates='mechanic_service_ticket')
+    service_ticket_mechanic: Mapped[list['Mechanics']] = relationship('Mechanics', secondary='ticket_mechanics', back_populates='mechanic_service_ticket')
     
 class Mechanics(Base):
     __tablename__ = 'mechanics'
@@ -54,4 +54,4 @@ class Mechanics(Base):
     address: Mapped[str] = mapped_column(String(500), nullable=True)
     salary: Mapped[float] = mapped_column(Float)
     
-    mechanic_service_ticket: Mapped['Service_tickets'] = relationship('Service_tickets', secondary='ticket_mechanics', back_populates='service_ticket_mechanic')
+    mechanic_service_ticket: Mapped[list['Service_tickets']] = relationship('Service_tickets', secondary='ticket_mechanics', back_populates='service_ticket_mechanic')

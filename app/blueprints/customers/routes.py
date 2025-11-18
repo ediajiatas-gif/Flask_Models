@@ -5,9 +5,11 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from app.models import Customers, db
 
+
+
 # Create our Create Customer Route
 @customers_bp.route('', methods=['POST']) #post method to create data 
-def create_mechanic():
+def create_customer():
     try:
         data = customer_schema.load(request.json)
     except ValidationError as e:

@@ -28,7 +28,7 @@ def assign_mechanic(ticket_id, mechanic_id):
     mechanic = db.session.get(Mechanics, mechanic_id)
     
     if not ticket or not mechanic:
-        return jsonify({"Mechanic or Service ticket not found"}), 404
+        return jsonify({"message": "Mechanic or Service ticket not found"}), 404
     
     if mechanic in ticket.service_ticket_mechanic:
         return jsonify({"message": "Mechanic already assigned to this ticket."}), 400
@@ -63,5 +63,5 @@ def unassign_mechanic(ticket_id, mechanic_id):
 
 @service_tickets_bp.route("", methods=['GET'])
 def read_service_tickets():
-    service_tickets = Service_tickets.query.all()
+    service_tickets = db.session.query(Service_tickets).all()
     return service_tickets_schema.jsonify(service_tickets), 200

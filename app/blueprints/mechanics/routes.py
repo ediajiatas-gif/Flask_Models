@@ -23,8 +23,8 @@ def create_mechanic():
     db.session.commit()
     return mechanic_schema.jsonify(new_mechanic), 201 #We always want to return
 
-# READ Mechanics (COME BACK TO THIS)
-@mechanics_bp.route("/", methods=['GET'])
+# READ Mechanics
+@mechanics_bp.route("", methods=['GET'])
 def read_mechanics():
     mechanics = db.session.query(Mechanics).all()
     return mechanics_schema.jsonify(mechanics), 200
