@@ -23,10 +23,10 @@ def create_mechanic():
     db.session.commit()
     return mechanic_schema.jsonify(new_mechanic), 201 #We always want to return
 
-# READ Mechanics
-@mechanics_bp.route("", methods=['GET'])
+# READ Mechanics (COME BACK TO THIS)
+@mechanics_bp.route("/", methods=['GET'])
 def read_mechanics():
-    mechanics = Mechanics.query.all()
+    mechanics = db.session.query(Mechanics).all()
     return mechanics_schema.jsonify(mechanics), 200
     '''converts/returns object/data into json'''
 
@@ -66,6 +66,5 @@ def delete_mechanic(mechanic_id):
         return jsonify({"Error": "Mechanic not found"}), 404
     db.session.delete(mechanic)
     db.session.commit()
-    return jsonify({
-        "message": f"Successfully deleted mechanic: {mechanic.name}"}), 200
+    return jsonify({"message": f"Successfully deleted mechanic: {mechanic_id}"}), 200
 

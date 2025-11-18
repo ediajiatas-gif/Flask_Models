@@ -18,7 +18,6 @@ ticket_mechanics = Table(
     Column('service_ticket_id', Integer, ForeignKey('service_tickets.id')),
     Column('mechanic_id', Integer, ForeignKey('mechanics.id'))
 )
-
 class Customers(Base):
     __tablename__ = 'customers'
     
@@ -35,7 +34,7 @@ class Service_tickets(Base):
     __tablename__ = 'service_tickets'
     
     id: Mapped[int] = mapped_column(primary_key=True)
-    customer_id: Mapped[int] = mapped_column(ForeignKey('customers.id'))
+    customer_id: Mapped[int] = mapped_column(ForeignKey('customers.id')) #nullable=True for testing
     service_desc: Mapped[str] = mapped_column(String(500), nullable=False)
     vin: Mapped[str] = mapped_column(String(30), nullable=False)
     service_date: Mapped[date] = mapped_column(Date, nullable=False)
