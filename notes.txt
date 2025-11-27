@@ -1,0 +1,12 @@
+Assignment: Token Authentication
+
+1. Create encode_token function (takes mechanic_id to create a token to that specific user)
+2. add password field to mechanic model (drop tables and re add)
+3. hash password before storing into db
+4. login schema (can be made, excluding: email and password from mechanic schema)
+5. create login in mechanics blueprint
+6. POST '/login': passing in email and password, validated by login_schema
+7. utilize encode_token() function to make token to be returned to that customer after credentials have been validated
+
+
+8. Create @token_required wrapper
